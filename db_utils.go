@@ -9,11 +9,6 @@ import (
 	"google.golang.org/api/option"
 )
 
-type Config struct {
-	DBurl        string `json:"DatabaseURL"`
-	AuthOverride string `json:"AuthOveride"`
-}
-
 type DBConstructor struct {
 	DBurl        string
 	ConfigPath   string
