@@ -9,9 +9,15 @@ import (
 	"google.golang.org/api/option"
 )
 
+type Config struct {
+	DBurl        string `json:DatabaseURL`
+	AuthOverride string `json:AuthOveride`
+}
+
 type DBConstructor struct {
-	DBurl  string
-	Config string
+	DBurl        string
+	ConfigPath   string
+	AuthOverride string
 }
 
 type DBUtils struct {
@@ -20,14 +26,18 @@ type DBUtils struct {
 	client *db.Client
 }
 
-func (dbc DBConstructor) make() DBUtils {
+func (dbc *DBConstructor) make() *DBUtils {
 	ctx := context.Background()
+
+	ao := map[string]interface{}{"uid": dbc.AuthOverride}
+
 	conf := &firebase.Config{
-		DatabaseURL: dbc.DBurl,
+		DatabaseURL:  dbc.DBurl,
+		AuthOverride: &ao,
 	}
 
 	// fetch service account key
-	opt := option.WithCredentialsFile(dbc.Config)
+	opt := option.WithCredentialsFile(dbc.ConfigPath)
 
 	app, err := firebase.NewApp(ctx, conf, opt)
 	if err != nil {
@@ -39,5 +49,5 @@ func (dbc DBConstructor) make() DBUtils {
 		log.Fatalln("error in creating firebase DB client: ", err)
 	}
 
-	return DBUtils{opt: opt, app: app, client: client}
+	return &DBUtils{opt: opt, app: app, client: client}
 }
