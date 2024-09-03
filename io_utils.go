@@ -7,6 +7,11 @@ import (
 	"os"
 )
 
+type Config struct {
+	DBurl        string `json:"DatabaseURL"`
+	AuthOverride string `json:"AuthOveride"`
+}
+
 func read_config() *Config {
 	file, err := os.Open("dbConf.json")
 	if err != nil {
@@ -26,4 +31,9 @@ func read_config() *Config {
 	}
 
 	return &config
+}
+
+type lastUpdate struct {
+	Index   int    `json:"Index"`
+	Weekday string `json:"Weekday"`
 }
