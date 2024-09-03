@@ -10,8 +10,8 @@ import (
 )
 
 type Config struct {
-	DBurl        string `json:DatabaseURL`
-	AuthOverride string `json:AuthOveride`
+	DBurl        string `json:"DatabaseURL"`
+	AuthOverride string `json:"AuthOveride"`
 }
 
 type DBConstructor struct {
